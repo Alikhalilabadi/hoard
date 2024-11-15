@@ -7,7 +7,10 @@ function Dashboard() {
         HOARD
       </header>
       <section className={styles.section}>
-        <h2>Total Money</h2>
+        <h2>Total Money : 13000</h2>
+      </section>
+      <section className={styles.section}>
+        <h2>Transfer Money</h2>
       </section>
       <section className={styles.section}>
         <h2>List of Connected Banks</h2>

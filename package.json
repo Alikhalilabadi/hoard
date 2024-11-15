@@ -12,7 +12,8 @@
     "next": "15.0.2",
     "node-sass": "^9.0.0",
     "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028"
+    "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "sass": "^1.81.0"
   },
   "devDependencies": {
     "eslint": "^8",

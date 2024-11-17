@@ -1,7 +1,21 @@
 import Image from 'next/image';
 import styles from '../styles/Dashboard.module.scss';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 function Dashboard() {
+ const router = useRouter();
+ useEffect(() => {
+     const authToken = localStorage.getItem("authToken");
+     if (!authToken) {
+       router.push("/");
+     }
+   }, [router]);
+ 
+   const handleLogout = () => {
+     localStorage.removeItem("authToken");
+     router.push("/");
+   };
   return (
     <div className={styles.dashboardContainer}>
 
@@ -15,7 +29,7 @@ function Dashboard() {
             className={styles.profileImage}
           />
           <div className={styles.profileInfo}>
-            <h2>Ali Khalilabadi</h2>
+            <h2>Daniel Tarafa</h2>
           </div>
         </div>
       </header>
@@ -51,6 +65,7 @@ function Dashboard() {
             <span>+$1,000.00</span>
           </li>
         </ul>
+      <button className={styles.transferButton} onClick={handleLogout}>Logout</button>
       </section>
     </div>
   );

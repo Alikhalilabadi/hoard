@@ -65,20 +65,20 @@ $iphone-width: 430px;
     margin: 0.5rem 0 1rem;
   }
 
-  .transferButton {
-    padding: 0.75rem 1.5rem;
-    background-color: $navy-blue;
-    color: $whitesmoke;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 6px;
-    width: 100%;
-    cursor: pointer;
+}
+.transferButton {
+  padding: 0.75rem 1.5rem;
+  background-color: $navy-blue;
+  color: $whitesmoke;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  cursor: pointer;
 
-    &:hover {
-      background-color: darken($navy-blue, 10%);
-    }
+  &:hover {
+    background-color: darken($navy-blue, 10%);
   }
 }
 

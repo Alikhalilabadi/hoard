@@ -1,8 +1,9 @@
 import Head from "next/head";
 import localFont from "next/font/local";
 import styles from "@/styles/Home.module.css";
-import Dashboard from "@/components/Dashboard";
 import LoginForm from "@/components/LoginForm";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,6 +17,14 @@ const geistMono = localFont({
 });
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      router.push("/dashboard");
+    }
+  }, [router]);
   return (
     <>
       <Head>
@@ -29,7 +38,6 @@ export default function Home() {
       >
         <main className={styles.main}>
           <LoginForm />
-          {/* <Dashboard /> */}
         </main>
       </div>
     </>

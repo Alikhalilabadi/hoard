@@ -73,3 +73,12 @@ $iphone-width: 430px;
     background-color: darken($navy-blue, 10%);
   }
 }
+.errorMessage {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+.successMessage {
+  color: green;
+  margin-top: 0.5rem;
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import styles from "../styles/Purchase_page.module.scss";
+import { useRouter } from "next/router";
 
 export default function PurchasePage() {
   const [customerID, setCustomerID] = useState("");
@@ -9,6 +10,19 @@ export default function PurchasePage() {
   const [newAddress, setNewAddress] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const storedUserData = localStorage.getItem("customerData");
+
+    if (!authToken || !storedUserData) {
+      router.push("/customer_login");
+    } else {
+      const parsedUserData = JSON.parse(storedUserData);
+      setUserData(parsedUserData);
+    }
+  }, [router]);
 
   const handlePurchase = async () => {
     try {

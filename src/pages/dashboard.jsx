@@ -16,7 +16,6 @@ function Dashboard() {
         router.push("/");
         return;
       }
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
         new URLSearchParams({ email: authToken, password: password }),

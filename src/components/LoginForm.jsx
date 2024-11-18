@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import styles from "../styles/LoginForm.module.scss";
 import { useRouter } from "next/router";
@@ -7,7 +7,6 @@ const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -17,26 +16,31 @@ const LoginForm = () => {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
-  
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}auth/login`, formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      });
-      setSuccess(response.data.message);
-      localStorage.setItem("authToken", response.data.token);
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      const { token, user } = response.data;
+
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("userData", JSON.stringify(user));
+
       router.push("/dashboard");
     } catch (err) {
       if (err.response) {
-        console.log(err.response.data);
         setError(err.response.data.detail || "Login failed!");
       } else {
-        console.log(err)
         setError("Unable to connect to the server.");
       }
     }
   };
-  
 
   return (
     <div className={styles.loginFormContainer}>
@@ -59,7 +63,7 @@ const LoginForm = () => {
         <div className={styles.formGroup}>
           <label htmlFor="password">Password</label>
           <input
-            type="text"
+            type="password"
             id="password"
             name="password"
             placeholder="Enter your password"
@@ -69,8 +73,7 @@ const LoginForm = () => {
           />
         </div>
 
-        {error && <p className={styles.errorMessage}>{JSON.stringify(error)}</p>}
-        {success && <p className={styles.successMessage}>{JSON.stringify(success)}</p>}
+        {error && <p className={styles.errorMessage}>{error}</p>}
 
         <button type="submit" className={styles.submitButton}>
           Login

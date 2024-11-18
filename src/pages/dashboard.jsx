@@ -1,72 +1,101 @@
-import Image from 'next/image';
-import styles from '../styles/Dashboard.module.scss';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Image from "next/image";
+import styles from "../styles/Dashboard.module.scss";
 
 function Dashboard() {
- const router = useRouter();
- useEffect(() => {
-     const authToken = localStorage.getItem("authToken");
-     if (!authToken) {
-       router.push("/");
-     }
-   }, [router]);
- 
-   const handleLogout = () => {
-     localStorage.removeItem("authToken");
-     router.push("/");
-   };
+  const router = useRouter();
+  const [userData, setUserData] = useState(null);
+  const [selectedBank, setSelectedBank] = useState(null);
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const storedUserData = localStorage.getItem("userData");
+
+    if (!authToken || !storedUserData) {
+      router.push("/");
+    } else {
+      const parsedUserData = JSON.parse(storedUserData);
+      setUserData(parsedUserData);
+
+      if (parsedUserData.banks.length > 0) {
+        setSelectedBank(parsedUserData.banks[0]);
+      }
+    }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
+    router.push("/");
+  };
+
+  const handleBankClick = (bank) => {
+    setSelectedBank(bank);
+  };
+
   return (
     <div className={styles.dashboardContainer}>
+      {userData && (
+        <>
+          <header className={styles.header}>
+            <div className={styles.profile}>
+              <Image
+                src="/images/danny.png"
+                width={100}
+                height={100}
+                alt="Customer Profile"
+                className={styles.profileImage}
+              />
+              <div className={styles.profileInfo}>
+                <h2>{userData.name}</h2>
+              </div>
+            </div>
+          </header>
 
-      <header className={styles.header}>
-        <div className={styles.profile}>
-          <Image 
-            src="/images/danny.png" 
-            width={100}
-            height={100}
-            alt="Customer Profile" 
-            className={styles.profileImage}
-          />
-          <div className={styles.profileInfo}>
-            <h2>Daniel Tarafa</h2>
-          </div>
-        </div>
-      </header>
+          <section className={styles.balanceSection}>
+            <h3>Total Balance</h3>
+            <p className={styles.balanceAmount}>
+              ${selectedBank ? selectedBank.balance.toFixed(2) : "0.00"}
+            </p>
+          </section>
 
-      <section className={styles.balanceSection}>
-        <h3>Total Balance</h3>
-        <p className={styles.balanceAmount}>$72,829.62</p>
-        <button className={styles.transferButton}>Transfer Funds</button>
-      </section>
+          <section className={styles.banksSection}>
+            <h3>Connected Banks</h3>
+            <ul className={styles.bankList}>
+              {userData.banks.map((bank, index) => (
+                <li
+                  key={bank.bank_id}
+                  className={
+                    selectedBank?.bank_id === bank.bank_id
+                      ? styles.selectedBank
+                      : ""
+                  }
+                  onClick={() => handleBankClick(bank)}
+                >
+                  {bank.bank_name} - {bank.account_type}
+                </li>
+              ))}
+            </ul>
+          </section>
 
-      <section className={styles.banksSection}>
-        <h3>Connected Banks</h3>
-        <ul className={styles.bankList}>
-          <li>Bank of America</li>
-          <li>Chase Bank</li>
-          <li>Wells Fargo</li>
-        </ul>
-      </section>
+          <section className={styles.transactionsSection}>
+            <h3>Recent Transactions</h3>
+            <ul className={styles.transactionList}>
+              {userData.recent_transactions.map((transaction) => (
+                <li key={transaction.id}>
+                  <span>{transaction.type}</span>
+                  <span>{transaction.amount}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-      <section className={styles.transactionsSection}>
-        <h3>Recent Transactions</h3>
-        <ul className={styles.transactionList}>
-          <li>
-            <span>USDT to BTC</span>
-            <span>+0.0116 BTC</span>
-          </li>
-          <li>
-            <span>Withdrawal</span>
-            <span>-$500.00</span>
-          </li>
-          <li>
-            <span>Deposit</span>
-            <span>+$1,000.00</span>
-          </li>
-        </ul>
-      <button className={styles.transferButton} onClick={handleLogout}>Logout</button>
-      </section>
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            Logout
+          </button>
+        </>
+      )}
     </div>
   );
 }

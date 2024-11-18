@@ -126,7 +126,7 @@ function Dashboard() {
             </ul>
           </section>
 
-          <section className={styles.transactionsSection}>
+          {/* <section className={styles.transactionsSection}>
             <h3>Recent Transactions</h3>
             <ul className={styles.transactionList}>
               {userData.recent_transactions.map((transaction) => (
@@ -136,7 +136,7 @@ function Dashboard() {
                 </li>
               ))}
             </ul>
-          </section>
+          </section> */}
 
           <button className={styles.transferButton} onClick={handleLogout}>
             Logout

@@ -24,9 +24,17 @@ function Dashboard() {
     }
   }, [router]);
 
+  const handleTransferClick = () => {
+    if (selectedBank) {
+      localStorage.setItem("selectedBank", JSON.stringify(selectedBank));
+      router.push("/transfer_window");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
+    localStorage.removeItem("selectedBank");
     router.push("/");
   };
 
@@ -52,16 +60,16 @@ function Dashboard() {
               </div>
             </div>
           </header>
-
-          <section className={styles.balanceSection}>
-            <h3>Total Balance</h3>
-            <p className={styles.balanceAmount}>
-              ${selectedBank ? selectedBank.balance.toFixed(2) : "0.00"}
-            </p>
-            <button className={styles.transferButton}>
+      
+        <section className={styles.balanceSection}>
+          <h3>Total Balance</h3>
+          <p className={styles.balanceAmount}>
+            ${selectedBank ? selectedBank.balance.toFixed(2) : "0.00"}
+          </p>
+          <button className={styles.transferButton} onClick={handleTransferClick}>
             Transfer Funds
           </button>
-          </section>
+        </section>
 
           <section className={styles.banksSection}>
             <h3>Connected Banks</h3>

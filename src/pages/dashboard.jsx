@@ -2,11 +2,45 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "../styles/Dashboard.module.scss";
+import axios from "axios";
 
 function Dashboard() {
   const router = useRouter();
   const [userData, setUserData] = useState(null);
   const [selectedBank, setSelectedBank] = useState(null);
+  const fetchUpdatedUserData = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      const password = localStorage.getItem("password");
+      if (!authToken) {
+        router.push("/");
+        return;
+      }
+
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+        new URLSearchParams({ email: authToken, password: password }),
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        }
+      );
+
+      const updatedUserData = response.data.user;
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+      setUserData(updatedUserData);
+
+      if (updatedUserData.banks.length > 0) {
+        setSelectedBank(updatedUserData.banks[0]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch updated user data:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUpdatedUserData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");

@@ -58,6 +58,9 @@ function Dashboard() {
             <p className={styles.balanceAmount}>
               ${selectedBank ? selectedBank.balance.toFixed(2) : "0.00"}
             </p>
+            <button className={styles.transferButton}>
+            Transfer Funds
+          </button>
           </section>
 
           <section className={styles.banksSection}>
@@ -66,6 +69,7 @@ function Dashboard() {
               {userData.banks.map((bank, index) => (
                 <li
                   key={bank.bank_id}
+                  style = {{cursor: 'pointer'}}
                   className={
                     selectedBank?.bank_id === bank.bank_id
                       ? styles.selectedBank
@@ -91,7 +95,7 @@ function Dashboard() {
             </ul>
           </section>
 
-          <button className={styles.logoutButton} onClick={handleLogout}>
+          <button className={styles.transferButton} onClick={handleLogout}>
             Logout
           </button>
         </>

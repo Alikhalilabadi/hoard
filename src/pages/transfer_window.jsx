@@ -118,7 +118,7 @@ const TransferWindow = () => {
               </option>
               {banks.map((bank) => (
                 <option key={bank.bank_id} value={bank.bank_id}>
-                  {bank.bank_name} - {bank.account_type}
+                  {bank.bank_name} - {bank.account_type} - {bank.account_id}
                 </option>
               ))}
             </select>

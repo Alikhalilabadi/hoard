@@ -86,7 +86,7 @@ function Dashboard() {
                   }
                   onClick={() => handleBankClick(bank)}
                 >
-                  {bank.bank_name} - {bank.account_type}
+                  {bank.bank_name} - {bank.account_type} - {bank.account_id}
                 </li>
               ))}
             </ul>

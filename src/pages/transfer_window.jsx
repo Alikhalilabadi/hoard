@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import styles from '../styles/Transfer_window.module.scss';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import styles from "../styles/Transfer_window.module.scss";
 
 const TransferWindow = () => {
   const router = useRouter();
-  const [targetAccountId, setTargetAccountId] = useState('');
-  const [amount, setAmount] = useState('');
+  const [targetAccountId, setTargetAccountId] = useState("");
+  const [amount, setAmount] = useState("");
   const [selectedBank, setSelectedBank] = useState(null);
   const [banks, setBanks] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -17,20 +18,63 @@ const TransferWindow = () => {
     } else {
       const userData = JSON.parse(localStorage.getItem("userData"));
       const bankData = userData?.banks || [];
-      const initialBank = JSON.parse(localStorage.getItem("selectedBank")) || bankData[0];
+      const initialBank =
+        JSON.parse(localStorage.getItem("selectedBank")) || bankData[0];
       setBanks(bankData);
       setSelectedBank(initialBank);
     }
   }, [router]);
 
-  const handleTransfer = (e) => {
+  const fetchUpdatedUserData = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      const password = localStorage.getItem("password");
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+        new URLSearchParams({ email: authToken, password: password }), // Include the necessary form data
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        }
+      );
+
+      const updatedUserData = response.data.user;
+      localStorage.setItem("userData", JSON.stringify(updatedUserData));
+
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Failed to fetch updated user data:", err);
+      setError("Error refreshing user data after transfer.");
+      setTimeout(() => setError(""), 5000);
+    }
+  };
+
+  const handleTransfer = async (e) => {
     e.preventDefault();
     if (!targetAccountId || !amount || !selectedBank) {
-      setError('Please fill in all fields.');
-      setTimeout(() => setError(''), 5000);
+      setError("Please fill in all fields.");
+      setTimeout(() => setError(""), 5000);
       return;
     }
-    console.log(`Transfer ${amount} to ${targetAccountId} from bank ${selectedBank.bank_name}`);
+
+    try {
+      const authToken = localStorage.getItem("authToken");
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}transactions/transfer`,
+        {
+          sender_account: selectedBank.account_id,
+          receiver_account: parseInt(targetAccountId),
+          amount: parseFloat(amount),
+        },
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      fetchUpdatedUserData();
+    } catch (err) {
+      setError(err.response?.data?.detail || "An error occurred during the transfer.");
+      setTimeout(() => setError(""), 5000);
+    }
   };
 
   const handleBankChange = (e) => {

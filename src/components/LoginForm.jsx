@@ -30,6 +30,7 @@ const LoginForm = () => {
       const { token, user } = response.data;
 
       localStorage.setItem("authToken", token);
+      localStorage.setItem("password", response.data.password);
       localStorage.setItem("userData", JSON.stringify(user));
 
       router.push("/dashboard");

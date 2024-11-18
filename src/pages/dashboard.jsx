@@ -35,6 +35,7 @@ function Dashboard() {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
     localStorage.removeItem("selectedBank");
+    localStorage.removeItem("password");
     router.push("/");
   };
 

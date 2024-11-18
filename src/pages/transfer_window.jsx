@@ -31,7 +31,7 @@ const TransferWindow = () => {
       const password = localStorage.getItem("password");
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
-        new URLSearchParams({ email: authToken, password: password }), // Include the necessary form data
+        new URLSearchParams({ email: authToken, password: password }),
         {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
         }
@@ -65,9 +65,6 @@ const TransferWindow = () => {
           receiver_account: parseInt(targetAccountId),
           amount: parseFloat(amount),
         },
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
       );
 
       fetchUpdatedUserData();

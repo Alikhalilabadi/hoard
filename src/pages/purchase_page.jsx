@@ -24,8 +24,8 @@ export default function PurchasePage() {
   const handlePurchase = async () => {
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}purchase`, {
-        customer_id: customerID,
-        product_id: productID,
+        customer_id: parseInt(customerID),
+        product_id: parseInt(productID),
         quantity: parseInt(quantity),
         new_address: newAddress,
       });

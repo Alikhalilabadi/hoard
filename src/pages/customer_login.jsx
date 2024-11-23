@@ -18,7 +18,7 @@ const LoginForm = () => {
       formData.append("password", password);
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}customers/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}customer/login`,
         formData,
         {
           headers: {

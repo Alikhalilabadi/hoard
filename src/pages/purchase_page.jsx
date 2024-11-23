@@ -32,9 +32,17 @@ export default function PurchasePage() {
       setMessage(response.data.message);
       setError(false);
     } catch (err) {
-      setMessage(err.response?.data?.detail || "Failed to purchase product");
+      const errorDetail = err.response?.data?.detail;
+      if (Array.isArray(errorDetail)) { 
+        setMessage(errorDetail.map((item) => item.msg).join(", "));
+      } else if (typeof errorDetail === "string") {
+        setMessage(errorDetail);
+      } else {
+        setMessage("Failed to purchase product");
+      }
       setError(true);
     }
+  
   };
 
   return (

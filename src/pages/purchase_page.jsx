@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../styles/Purchase_page.module.scss";
 import { useRouter } from "next/router";
@@ -14,13 +14,10 @@ export default function PurchasePage() {
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
-    const storedUserData = localStorage.getItem("customerData");
-
-    if (!authToken || !storedUserData) {
+    if (!authToken) {
       router.push("/customer_login");
     } else {
-      const parsedUserData = JSON.parse(storedUserData);
-      setUserData(parsedUserData);
+      // Auth logic
     }
   }, [router]);
 

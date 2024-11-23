@@ -26,11 +26,10 @@ const LoginForm = () => {
           },
         }
       );
-
-      const { token } = response.data;
+      const { token, password: customerPassword, address: customerAddress, customer_id } = response.data;
 
       localStorage.setItem("authToken", token);
-      localStorage.setItem("password", response.data.password);
+      localStorage.setItem("userData", JSON.stringify({customerPassword, customerAddress, customer_id}));
 
       router.push("/purchase_page");
     } catch (err) {

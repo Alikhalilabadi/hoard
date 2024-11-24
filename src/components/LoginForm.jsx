@@ -18,7 +18,7 @@ const LoginForm = () => {
       formData.append("password", password);
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}bank_user/login`,
         formData,
         {
           headers: {

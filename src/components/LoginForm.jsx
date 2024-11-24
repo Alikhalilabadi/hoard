@@ -27,10 +27,10 @@ const LoginForm = () => {
         }
       );
 
-      const { token, user } = response.data;
+      const { token, password: userPassword, user } = response.data;
 
       localStorage.setItem("authToken", token);
-      localStorage.setItem("password", response.data.password);
+      localStorage.setItem("password", userPassword);
       localStorage.setItem("userData", JSON.stringify(user));
 
       router.push("/dashboard");

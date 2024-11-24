@@ -17,7 +17,7 @@ function Dashboard() {
         return;
       }
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}auth/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}bank_user/login`,
         new URLSearchParams({ email: authToken, password: password }),
         {
           headers: { "Content-Type": "application/x-www-form-urlencoded" },

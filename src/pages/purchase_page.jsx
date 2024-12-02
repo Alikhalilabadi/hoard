@@ -29,7 +29,7 @@ export default function PurchasePage() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}customer/${customerID}/address`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}customer/customer/${customerID}/address`,
         { new_address: newAddress }
       );
       setAddressMessage(response.data.message);

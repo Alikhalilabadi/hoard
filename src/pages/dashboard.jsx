@@ -82,13 +82,13 @@ function Dashboard() {
         <>
           <header className={styles.header}>
             <div className={styles.profile}>
-              <Image
+              {/* <Image
                 src="/images/danny.png"
                 width={100}
                 height={100}
                 alt="Customer Profile"
                 className={styles.profileImage}
-              />
+              /> */}
               <div className={styles.profileInfo}>
                 <h2>{userData.name}</h2>
               </div>
